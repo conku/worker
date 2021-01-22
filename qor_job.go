@@ -12,8 +12,8 @@ import (
 
 	"github.com/conku/admin"
 	"github.com/conku/audited"
+	"github.com/conku/gorm"
 	"github.com/conku/serializable_meta"
-	"github.com/jinzhu/gorm"
 )
 
 // QorJobInterface is a interface, defined methods that needs for a qor job

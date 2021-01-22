@@ -59,7 +59,7 @@ func New(config *Config) (*Kubernetes, error) {
 // GetCurrentPod get current pod
 func (k8s *Kubernetes) GetCurrentPod() *corev1.Pod {
 	var (
-		podlist, err = k8s.Clientset.Core().Pods("").List(metav1.ListOptions{})
+		podlist, err = k8s.Clientset.CoreV1().Pods("").List(metav1.ListOptions{})
 		localeIP     = GetLocalIP()
 	)
 
@@ -145,7 +145,7 @@ func (k8s *Kubernetes) Add(qorJob worker.QorJobInterface) error {
 			k8sJob.Spec.Template.Spec.Containers[idx] = container
 		}
 
-		_, err = k8s.Clientset.Batch().Jobs(k8sJob.ObjectMeta.GetNamespace()).Create(k8sJob)
+		_, err = k8s.Clientset.BatchV1().Jobs(k8sJob.ObjectMeta.GetNamespace()).Create(k8sJob)
 	}
 	return err
 }
@@ -169,7 +169,7 @@ func (k8s *Kubernetes) Kill(qorJob worker.QorJobInterface) error {
 	)
 
 	if err == nil {
-		return k8s.Clientset.Batch().Jobs(k8sJob.ObjectMeta.GetNamespace()).Delete(jobName, &metav1.DeleteOptions{})
+		return k8s.Clientset.BatchV1().Jobs(k8sJob.ObjectMeta.GetNamespace()).Delete(jobName, &metav1.DeleteOptions{})
 	}
 	return err
 }
@@ -183,7 +183,7 @@ func (k8s *Kubernetes) Remove(qorJob worker.QorJobInterface) error {
 
 	if err == nil {
 		// TODO Don't remove if it is already running
-		return k8s.Clientset.Batch().Jobs(k8sJob.ObjectMeta.GetNamespace()).Delete(jobName, &metav1.DeleteOptions{})
+		return k8s.Clientset.BatchV1().Jobs(k8sJob.ObjectMeta.GetNamespace()).Delete(jobName, &metav1.DeleteOptions{})
 	}
 	return err
 }
